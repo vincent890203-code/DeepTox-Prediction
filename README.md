@@ -4,6 +4,7 @@
 ![RDKit](https://img.shields.io/badge/Chemoinformatics-RDKit-green)
 ![Streamlit](https://img.shields.io/badge/Frontend-Streamlit-red)
 ![Status](https://img.shields.io/badge/Status-MVP%20Completed-success)
+![CI Status](https://github.com/vincent890203-code/DeepTox-Prediction/actions/workflows/ci.yml/badge.svg)
 
 ## 📖 專案簡介 (Project Overview)
 **DeepTox** 是一個端對端 (End-to-End) 的機器學習系統，旨在解決藥物研發早期的毒性篩選痛點。本專案整合了化學資訊學 (Chemoinformatics) 與 AI 演算法，針對 **Tox21 資料集** 中的 **NR-AR (雄激素受體)** 活性進行預測，協助研發人員在實驗室測試前識別高風險分子。
@@ -17,10 +18,11 @@
 
 ## 🚀 功能特色 (Key Features)
 
-* **🧪 智慧特徵工程**：自動化學結構解析，生成 2048-bit ECFP4 分子指紋。
-* **⚖️ 平衡訓練機制**：內建 SMOTE 演算法，合成少數類別樣本，大幅提升模型對有毒分子的敏感度。
-* **📊 互動式儀表板**：基於 Streamlit 的視覺化介面，支援即時 SMILES 輸入與分子結構繪圖 (2D Visualization)。
-* **🎚️ 動態風險評估**：使用者可自定義風險門檻 (Risk Threshold)，實現「寧可錯殺，不可放過」的篩選策略。
+* ** 智慧特徵工程**：自動化學結構解析，生成 2048-bit ECFP4 分子指紋。
+* ** 平衡訓練機制**：內建 SMOTE 演算法，合成少數類別樣本，大幅提升模型對有毒分子的敏感度。
+* ** 互動式儀表板**：基於 Streamlit 的視覺化介面，支援即時 SMILES 輸入與分子結構繪圖 (2D Visualization)。
+* ** 動態風險評估**：使用者可自定義風險門檻 (Risk Threshold)，實現「寧可錯殺，不可放過」的篩選策略。
+* ** 穩健的工程架構**：採用 OOP 物件導向設計，並導入 CI/CD 自動化測試，確保模型迭代過程中的程式碼品質與可重現性。
 
 ---
 
@@ -35,20 +37,24 @@
 | **Imbalanced Data** | **Imbalanced-learn** | SMOTE 數據增強 (Synthetic Minority Over-sampling) |
 | **Web App** | **Streamlit** | 前端介面開發、模型部署 |
 | **Version Control** | Git / GitHub | 版本控制與協作 |
-
+| **DevOps & QA** | GitHub Actions, Pytest | 自動化 CI 流程、單元測試、Code Linting (Flake8) |
 ---
 
 ## 📂 專案結構 (Directory Structure)
 
 ```text
 Bio-Project/
-├── app.py                  # 🚀 產品入口：Streamlit 網頁主程式
-├── run_analysis_3.py       # ⚙️ 訓練管線：負責數據清洗、特徵工程、模型訓練與存檔
-├── my_practice.py          # 🧰 核心模組：封裝 BioMLTrainer 類別 (OOP 設計)
-├── tox21.csv               # 📄 原始數據：tox21 Dataset (from)
-├── tox_model.pkl           # 🧠 訓練好的模型 (Binary File)
-├── model_config.pkl        # ⚙️ 模型設定檔 (Threshold, n_bits)
-└── README.md               # 📖 專案說明文件
+├── .github/workflows/      #  CI 配置：GitHub Actions 自動化測試腳本
+├── tests/                  #  測試案例：包含單元測試 (Unit Tests)
+│   └── test_core.py        #    - 針對核心邏輯與 SMOTE 的測試
+├── app.py                  #  產品入口：Streamlit 網頁主程式
+├── run_analysis.py         #  訓練管線：負責數據清洗、特徵工程、模型訓練與存檔
+├── bioml_trainer.py        #  核心模組：封裝 BioMLTrainer 類別 (OOP 設計)
+├── tox21.csv               #  原始數據：tox21 Dataset
+├── tox_model.pkl           #  訓練好的模型 (Binary File)
+├── model_config.pkl        #  模型設定檔 (Threshold, n_bits)
+├── requirements.txt        #  依賴清單
+└── README.md               #  專案說明文件
 
 ```
 
@@ -68,7 +74,7 @@ pip install pandas numpy scikit-learn rdkit streamlit imbalanced-learn joblib
 
 ```Bash
 
-python run_analysis_3.py
+python run_analysis.py
 
 ```
 預期輸出：您將看到終端機顯示準確率 (Accuracy) 與分類報告，並提示模型已儲存。
