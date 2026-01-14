@@ -6,12 +6,17 @@ import pandas as pd
 from bioml_trainer import BioMLTrainer 
 
 # 1. 製作假資料 (Mock Data)
-# 我們模擬 50 筆資料，每筆有 10 個特徵
 @pytest.fixture
 def dummy_data():
-    X = pd.DataFrame(np.random.rand(50, 10), columns=[f'feat_{i}' for i in range(10)])
-    # 模擬不平衡資料 (大部分是 0)
-    y = np.array([0]*45 + [1]*5)
+    n_samples = 100
+    n_features = 10
+    
+    X = pd.DataFrame(np.random.rand(n_samples, n_features), columns=[f'feat_{i}' for i in range(n_features)])
+    
+    # 建立 80 個無毒(0) 和 20 個有毒(1)
+    # 這樣切分後，訓練集大約會有 16 個有毒樣本，遠大於 SMOTE 需要的 5 個，就不會報錯了
+    y = np.array([0]*80 + [1]*20)
+    # --- 修改點結束 ---
     return X, y
 
 # 2. 測試：類別能不能被初始化
