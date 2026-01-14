@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from my_practice import BioMLTrainer
+from bioml_trainer import BioMLTrainer
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')  # 關閉所有 RDKit 的 C++ 層級警告
 # import warnings 

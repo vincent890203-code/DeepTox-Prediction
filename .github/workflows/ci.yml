@@ -1,0 +1,41 @@
+name: DeepTox CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. 下載你的程式碼
+    - uses: actions/checkout@v3
+
+    # 2. 設定 Python 環境
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    # 3. 安裝依賴 (包含 RDKit, Streamlit 等)
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    # 4. 檢查程式碼風格 (Lint)
+    # 我們排除 __pycache__ 和 .git 資料夾，並忽略一些過長的行 (E501)
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    # 5. 執行單元測試 (這是重點！)
+    # 我們告訴 pytest 把當前目錄加到 PYTHONPATH，這樣它才找得到 bioml_trainer.py
+    - name: Run Unit Tests
+      run: |
+        export PYTHONPATH=$PYTHONPATH:.
+        pytest tests/

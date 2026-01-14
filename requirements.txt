@@ -5,3 +5,5 @@ rdkit
 streamlit
 imbalanced-learn
 joblib
+pytest
+flake8
